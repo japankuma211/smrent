@@ -1,0 +1,50 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+    
+    <c:set var="contextPath" value="${pageContext.request.contextPath }"/>
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<body>
+<center>
+	<%-- <결제하기> 이미지  --%>
+	<img alt="" src="${contextPath }/img/haki.jpg" border="0">
+	
+	<%--결제하기 버튼 눌렀을때....컨트롤러 요청시... 렌트정보들 전달 --%> 
+	<form action="${contextPath }/product/CarOrderController.do" method="post">
+	 <p>
+	 	<font size="13" color="blue">차량 렌트 비용 : ￦${requestScope.totalreserve }원</font>
+	 </p>
+	 <p>
+	 	<font size="13" color="blue">차량 옵션 비용 : ￦${requestScope.totaloption }원</font>
+	 </p>
+	 <p>
+	 	<font size="13" color="blue">총 비용 : ￦${totalreserve + totaloption }원</font>
+	 </p>
+	  <%--실제 예약에 관련된 데이터를 CarOrderController.java 서블릿 파일로 넘겨줌 --%>
+	  <input type="hidden" name="carno" value="${requestScope.vo.carno }">
+	  <input type="hidden" name="carqty" value="${requestScope.vo.carqty }">
+	  <input type="hidden" name="carreserveday" value="${requestScope.vo.carreserveday }">
+	  <input type="hidden" name="carins" value="${requestScope.vo.carins }">
+	  <input type="hidden" name="carwifi" value="${requestScope.vo.carwifi }">
+	  <input type="hidden" name="carnave" value="${requestScope.vo.carnave }">
+	  <input type="hidden" name="carbabyseat" value="${requestScope.vo.carbabyseat }">
+	  <input type="hidden" name="carbegindate" value="${requestScope.vo.carbegindate }">
+	
+	 <p>
+	<%--  <c:choose>
+	 <c:when test="${id == null }"> --%>
+	   예약 전화번호  :
+	  <input type="text" name="memberphone" size="10">&nbsp;&nbsp;&nbsp;
+	  비밀번호:
+	  <input type="password" name="memberpass" size="10">
+	  <%-- </c:when>
+	</c:choose> --%>
+	  <input type="submit" value="결제하기"> 
+	 </p> 	  
+	 
+	</form>	
+</center>
+</body>
+</html>
