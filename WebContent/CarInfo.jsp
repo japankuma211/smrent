@@ -8,6 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="${contextPath}/css/product.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -71,11 +72,95 @@
 		</form>
 		<p>
 		<b>차량 정보 상세 보기</b><p>
-		${bean.carinfo }
+		${vo.carinfo }
 		
 	</center>
 
-
+<script src="${contextPath}/js/jquery-3.2.1.min.js"></script>
+<script src="${contextPath}/js/popper.js"></script>
+<script src="${contextPath}/js/bootstrap.min.js"></script>
+<script src="${contextPath}/js/easing.js"></script>
+<script src="${contextPath}/js/parallax.min.js"></script>
+<script src="${contextPath}/js/custom.js"></script>
+<script src="${contextPath}/js/product_custom.js"></script>
+<script>
+   //후기
+$(document).ready(function(){
+	reviewList();
+});
+   
+   //리뷰목록 보여주기
+   
+   function reviewList(){
+	   
+	   var url1='${contextPath}/reviewServlet/listReview.do';
+	   var reviewListInfo1='{"carno":"'+${vo.carno}+'"}';
+	   var carno = ${vo.carno};
+	   
+	   $.ajax({
+		   url :url,
+		   type : 'post',
+		   data : {revewListInfo : reviewListInfo1},
+		   success : function(data){
+			   var a='';
+			   var b='';
+			   
+			   if(data == null || data == ''){
+				   a += '<li class=" review clearfix">';
+	       			a += '<p>등록된 리뷰가 없습니다.</p>';
+	       			a += '</li>';
+	       			$(".reviews_container ul").html(a);	
+	       			return;
+			   }
+			   var jsonInfo = JSON.parse(data);
+		       	
+	        	$.each(jsonInfo, function(index, entry){
+	        	
+		        	
+	        		$.each(entry, function(key, value){
+	        			
+	        			var no = value.reviewNo;
+			    	    var name = value.userName;
+	 			       	var content = value.reviewContent;
+		        	   	var date = value.reviewDate;	
+		           		var id = value.userId;
+						var rating = value.starRating;
+		           		var num = value.reviewNum;
+		           		
+				   a += '<li class=" review clearfix" id="review'+no+'">';
+					a += '<div class="review_image"><img src="${contextPath}/images/review_1.jpg" alt=""></div>';
+					a += '<div class="review_content">';
+					a += '<div class="review_name"><b>'+name+'</b></div>';
+					a += '<div class="review_date">'+date+'</div>'
+					a += '<div class="rating rating_'+rating+' review_rating" data-rating="'+rating+'">';
+					a += '<i class="fa fa-star"></i>';
+					a += '<i class="fa fa-star"></i>';
+					a += '<i class="fa fa-star"></i>';
+					a += '<i class="fa fa-star"></i>';
+					a += '<i class="fa fa-star"></i>';
+					a += '</div>';
+					a += '<div class="review_text">';
+					a += '<p>'+content+'</p>';
+					if('${userId}' == id || '${userId}' == 'admin'){
+						a += '<button type="button" class="btn btn-sm btn-danger mt-2" onclick="reviewDelete('+no+')">삭제</button>';	
+		   }
+					a += '</div>';
+					a += '</div>';
+					a += '</li>';
+					
+			$(".reviews_container ul").html(a);	
+	   });var rCount = entry.length;
+		$("#rCount").html(rCount);
+		$("#rCount2").html(rCount);
+  	});
+},
+error: function(err) {
+   alert("ajax 통신에러");
+}
+});
+	        		
+   }
+</script>
 
 </body>
 </html>
